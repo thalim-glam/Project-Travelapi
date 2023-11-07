@@ -31,8 +31,7 @@ Local storage appends to list
 
 ## Credits
 
-https://github.com/thalim-glam
-Partner
+This was a group project and my teammate was Pakapong Mongkol = https://github.com/Pak547/surprise-me-daily
 
 ## License
 
