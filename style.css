@@ -2,71 +2,160 @@
   margin:0px;
   padding: 0px;
   box-sizing: border-box;
+  font-size: 20px;
 }
 
-input{
-  border: 0;
-  outline: 0;
-  background: #fdffeb;
-  color: #090909;
-  font-size: 18px;
+.column {
+  display: table-row;
 }
 
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
+.hero {
+  background: url("./assets/images/background.jpg") no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: center;
 }
 
-.container {
-  display: flex;
-  flex-direction: row;
-  height: 60vh;
+#left-column {
+  box-shadow: rgb(0, 153, 255) 0px 0px 0px 3px;
+
 }
 
+#search {
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+
+#start-btn{
+margin-top: 8px;
+margin-bottom: 8px;
+}
+
+#left-arrow {
+margin-left: 8px;
+margin-right: 8px;
+}
+
+#right-arrow {
+margin-left: 8px;
+margin-right: 8px;
+}
 
 .middle {
-  flex: 0 0 200px;
+  border-top: 10px;
+  border-bottom: 10px;
+}
+
+
+#right-column {
+  max-width: auto;
+  max-height: auto;
+  box-shadow: rgb(183, 0, 255) 0px 0px 0px 3px;
+  border: 20px;
   padding: 20px;
-  display: flex;
-  flex-direction: column;
+}
+
+.innerImage {
+ height: auto;
+ max-width: 75%;
+}
+
+.innerAnchor {
+font-size: 12px;
+color: blue;
+}
+
+.input, .textarea {
+  box-shadow: inset 0 0.0625em 0.125em rgba(10,10,10,.05);
+  width: 290px;
+}
+#start-btn {
+  margin-top: 1px;
+}
+
+#start-btn:hover {
+  filter: brightness(88%);
+  transition: .4s;
+}
+
+
+/* TITLE ANIMATION STARTS HERE */
+.animate-character
+{
+   text-transform: uppercase;
+  background-image: linear-gradient(
+    -225deg,
+    rgb(183, 0, 255) 29%,
+    #5910a8 67%,
+    rgb(0, 153, 255) 100%
+  );
+  background-size: auto auto;
+  background-clip: border-box;
+  background-size: 200% auto;
+  color: #fff;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: textclip 3.2s linear infinite;
+  display: inline-block;
   align-items: center;
+  justify-content: center;
+  font-size: 60px;
 }
 
-.text-input {
-  width: 100%;
-  padding: 12px 20px;
-  margin: 8px 0;
+@keyframes textclip {
+  to {
+    background-position: 200% center;
+  }
+}
+
+
+/* CSS */
+#start-btn {
+  background-image: linear-gradient(144deg,rgb(0, 153, 255), #5B42F3 50%,rgb(183, 0, 255));
+  border: 0;
+  border-radius: 8px;
+  box-shadow: rgba(130, 28, 247, 0.454) 0 15px 30px -5px;
   box-sizing: border-box;
-}
-
-footer {
-  margin-top: 60px;
-  margin-bottom: 60px;
-  background-color:  burlywood;
-}
-
-.weatherL {
-  height: 15rem;
-  width: 35rem;
-  background-color: rgba(152, 228, 165, 0.577);
-  text-align: center;
-  padding-top: 20px;
-  margin-left: 25px;
-  border-radius: 30px;
-  border: 2px solid rgb(14, 43, 1);
-}
-
-#current-weather {
-  width: 160px;
-  margin: auto;
-}
-
-#logo {
-  border-radius: 4px;
+  color: #FFFFFF;
+  font-family: Phantomsans, sans-serif;
+  font-size: 20px;
+  line-height: 1em;
   max-width: 100%;
-  max-height: 100%;
+  min-width: 140px;
+  padding: 3px;
+  text-decoration: none;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  white-space: nowrap;
+  cursor: pointer;
 }
 
-.card {
-  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+#start-btn:active,
+#start-btn:hover {
+  outline: 0;
+}
+
+#start-btn span {
+  background-color: rgb(5, 6, 69);
+  padding: 16px 24px;
+  border-radius: 6px;
+  width: 100%;
+  height: 100%;
+  transition: 300ms;
+}
+
+#start-btn:hover span {
+  background: none;
+}
+
+@media (min-width: 768px) {
+  #start-btn   {
+    font-size: 24px;
+    min-width: 196px;
+  }
 }
