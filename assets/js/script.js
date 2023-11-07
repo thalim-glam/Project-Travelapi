@@ -4,6 +4,9 @@ var searchButton = document.querySelector(".start-btn")
 var temperature = document.querySelector(".temperature");
 var summary = document.querySelector(".summary");
 var loc = document.querySelector(".location");
+const savedCities = JSON.parse(localStorage.getItem("Saved Cities")) || []
+const selectElement = document.querySelector("#search-dropdown")
+const inputElement = document.querySelector("#search")
 
 var cityName = "";
 const weatherKey = "bad2585150121c9b32104915c6e8ce3f"; // not best practice
@@ -19,40 +22,60 @@ function handleWeatherResponse(data) {
 function searchWeather(cityName) {
   console.log("searching weather")
   fetch(`https://api.openweathermap.org/data/2.5/weather?q=${cityName}&units=imperial&appid=${weatherKey}`)
-    .then(function (response) {
-      return response.json();
-    })
-    .then(handleWeatherResponse);
+  .then(function (response) {
+    return response.json();
+  })
+  .then(handleWeatherResponse);
 }
-// Im gonna adjust to fit in ticketmaster city value
 
-// Tasnim code above here
+// Below is ticketmaster 
 
 const TIX_KEY = "wmaoc2ZzZXf8620JjoaSV5OEFlvJNJ84" // not best practice
 const TIX_BASE_PATH = `https://app.ticketmaster.com/discovery/v2/events.json`;
+selectElement.addEventListener("change", function(){
+  const selectedCity = selectElement.value
+  if(selectedCity){
+    searchWeather(selectedCity)
+    getData(selectedCity)
+  }
+})
 
 searchButton.addEventListener("click", function (event) {
   event.preventDefault()
-  cityName = searchInput.value.trim()
+  cityName = inputElement.value.trim()
   console.log("cityName : " + cityName)
-  searchWeather(cityName)
-  console.log("getting ticket data")
-  getData(cityName)
-})
+  if(cityName){
+    if(!savedCities.includes(cityName)){
+      savedCities.push(cityName)
+      localStorage.setItem("Saved Cities",JSON.stringify(savedCities))
+      const option = document.createElement("option")
+      option.value = cityName
+      option.textContent = cityName
+      selectElement.appendChild(option)
+    }
+    selectElement.value = cityName
+    searchWeather(cityName)
+    getData(cityName)
+  }
+
+localStorage.setItem("Saved Cities", JSON.stringify(cityName));
+localStorage.setItem("Saved Events", JSON.stringify(eventList));
+}
+)
 // empty array because the api array to then reassign on line 105
 // this array is causing the search input to not work properly because the list is going into the array
 let eventList = [];
 // console.log("empty array " + eventList)
 let eventIncr = 0;
 const leftArrowBtn = document.querySelector("#left-arrow");
-const rightArrowBtn = document.querySelector("#right-arrow")
+const rightArrowBtn = document.querySelector("#right-arrow");
 
 const leftIncr = function minusMinus() {
   // creating limit
   if (eventIncr > 0) {
     eventIncr--;
     console.log(eventIncr);
-    showData();
+    getData();
   } else {
     eventIncr = 0
     console.log(eventIncr);
@@ -65,7 +88,7 @@ const rightIncr = function plusPlus() {
   if (eventIncr < 19) {
     eventIncr++;
     console.log(eventIncr);
-    showData();
+    getData();
   } else {
     eventIncr = 19
     console.log(eventIncr);
@@ -85,13 +108,11 @@ const rightIncr = function plusPlus() {
 }
 rightArrowBtn.addEventListener('click', rightIncr)
 
-
 async function getData() {
   try {
     const tixUrl = TIX_BASE_PATH + `?city=${cityName}&apikey=${TIX_KEY}`
     console.log("tixurl data", tixUrl)
     const response = await fetch(tixUrl);
-    // if theres an error then say not valid and show status
     if (response.ok) {
       console.log("if response ok")
       const data = await response.json();
@@ -107,19 +128,15 @@ function showData(eventList) {
   console.log("event list", eventList)
   // title
   const eventData = eventList[eventIncr].name
-  // const eventData = data._embedded.events[eventIncr].name
   //date
   const dateData = eventList[eventIncr].dates.start.localDate
-  // const dateData = data._embedded.events[eventIncr].dates.start.localDate
   //time
   const timeData = eventList[eventIncr].dates.start.localTime
-  // const timeData = data._embedded.events[eventIncr].dates.start.localTime
   // img jpg
   const picData = eventList[eventIncr].images[0].url
-  //  const picData = data._embedded.events[eventIncr].images[0].url
   // buy ticket link
-   const linkData = eventList[eventIncr].url
-  // const linkData = data._embedded.events[eventIncr].images[0].url
+  const linkData = eventList[eventIncr].url
+  // beginning of html inject
   const eventContainer = document.getElementById('showEvents');
   // reset the propagation 
   eventContainer.innerHTML = "";
@@ -128,12 +145,14 @@ function showData(eventList) {
   // shows picture, note .src
   const eventPic = document.createElement('img');
   eventPic.src = picData
+  eventPic.className = 'innerImg'
   // shows title
   const eventTitle = document.createElement('h2');
   eventTitle.textContent = eventData
   // buy ticket link
   const eventLink = document.createElement('a');
   eventLink.href = linkData
+  eventLink.className = 'innerAnchor'
   eventLink.textContent = eventLink.href
   //shows date in YYYY-MM-DD
   const eventDate = document.createElement('p');
@@ -149,4 +168,11 @@ function showData(eventList) {
   eventElement.appendChild(eventTime);
   // finally we propagate into the container
   eventContainer.appendChild(eventElement);
+}
+
+for(i = 0; i<savedCities.length; i++){
+  const option = document.createElement("option")
+  option.value = savedCities[i]
+  option.textContent = savedCities[i] 
+  selectElement.appendChild(option)
 }
